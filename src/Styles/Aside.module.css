@@ -1,0 +1,26 @@
+.aside{
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    height: 110vh;
+    width: 10vh;
+    border-right: 1px black solid;
+    top: 5vh;
+    transition: all .5s;
+    align-items: center;
+    gap: 5px;
+    z-index: 1000;
+    background-color: white;
+}
+
+.aside:hover{
+    width: 25vh;
+}
+
+
+.home{
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    gap: 5px;
+}

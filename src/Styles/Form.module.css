@@ -1,0 +1,181 @@
+
+/* Estilos para el contenedor principal de autenticación */
+.Wrapper_Auth {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    background-image: url('../Imgs/FondoAuth.jpg');
+    background-size: 100%;
+}
+
+/* Estilos para el contenedor de información */
+.Wrapper_Info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F9F9F9;
+    width: 50vh;
+    height: 50vh;
+    gap: 25px; 
+    border-radius: 5%;
+}
+
+/* Estilos para el título */
+h1 {
+    margin-top: 25px;
+}
+
+/* Estilos para el logo */
+.Wrapper_Info_Logo {
+    width: 20vh;
+}
+
+/* Estilos para el formulario */
+.Wrapper_Form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #F9F9F9;
+    width: 50vh;
+    height: 75vh;
+    gap: 25px; 
+    border-radius: 5%;
+    box-shadow: -8px 6px 5px 2px rgba(0,0,0,0.18);
+    -webkit-box-shadow: -8px 6px 5px 2px rgba(0,0,0,0.18);
+    -moz-box-shadow: -8px 6px 5px 2px rgba(0,0,0,0.18);
+}
+
+/* Estilos para los campos de entrada */
+.Form_Inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    width: 100%;
+}
+
+/* Estilos para los inputs */
+.FormInput {
+    width: 90%; /* Ajusta el ancho de los inputs */
+    height: 5vh;
+    font-size: 15px;
+    text-align: center;
+}
+
+
+/* Estilos para el contenedor de cada input y su ícono */
+.Input_Wrapper {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+/* Estilos para el ícono */
+.Icon_Wrapper {
+    margin-right: 10px;
+    color: #666;
+}
+
+/* Estilos para el botón */
+.ButtonForm {
+    width: 25vh;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.ButtonForm:hover {
+    background-color: #0056b3;
+}
+
+.alert{
+ 
+    background-color: #ff2600;
+    color: white;
+
+}
+
+@media  screen and (max-width: 909px) {
+    
+    .Wrapper-Auth{
+        gap: 15px;
+    }
+
+}
+
+.Form_Links{
+    display: flex;
+    gap: 15px;
+}
+
+.ForgotAccountButton {
+    background-color: #FF8800; /* Naranja llamativo */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+.ForgotAccountButton:hover {
+    background-color: #e07600; /* Color más oscuro al pasar sobre el botón */
+}
+
+.ForgotAccountButton:active {
+    background-color: #cc6600; /* Color aún más oscuro al hacer clic */
+}
+
+.Input_Wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputFile {
+    display: none; /* Oculta el input file */
+}
+
+.customFileInput {
+    width: 25vh;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.customFileInput:hover {
+    background-color: #0056b3;
+}
+
+.ImageContainer {
+    width: 15vh;
+    height: 25vh;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #007BFF; /* Bordes opcionales */
+  }
+  
+  .ImagePreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Mantiene la proporción y cubre el contenedor */
+  }

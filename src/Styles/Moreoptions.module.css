@@ -1,0 +1,17 @@
+.MenuWrapper{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Info{
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.Options{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

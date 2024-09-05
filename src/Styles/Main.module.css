@@ -1,0 +1,65 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    width: 90vw;
+    height: 100vh;  
+    top: 5vh;
+    z-index: 1;
+    left: 10vh;
+}
+
+
+.maindash {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 90vw;
+    height: 100vh;
+    top: 5vh;
+    z-index: 1;
+    flex-wrap: wrap;
+    gap: 15px;
+    left: 10vh;
+}
+
+
+.MainActivities{
+    display: flex;
+    width: 130vh;
+    flex-wrap: wrap;
+    height: 40vh;
+    justify-content: center;
+    gap: 15px;
+}
+
+.ChartsContainer{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120vh;
+    height: 50vh;
+    gap: 100px;
+    top: -10vh;
+}
+
+@media screen and (max-width: 1453px){
+
+    .ChartsContainer{
+        flex-direction: column;
+        top: 5vh;
+        width: 150vh;
+    }
+
+}
+
+@media screen and (max-width: 743px) {
+    .ChartsContainer{
+        top: 40vh;
+        gap: 20px;
+    }
+}
+

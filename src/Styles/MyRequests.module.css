@@ -1,0 +1,54 @@
+.wrapper{
+    display: flex;
+    align-items: center;
+    width: 70vw;
+    height: auto; /* Asegura que el Wrapper se ajuste según el contenido */
+    border: 1px solid black;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.wrappercontent{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.image{
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+}
+
+.ButtonAccept {
+    width: 22vw;
+    padding: 10px;
+    background-color: #06fc89;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.ButtonAccept:hover {
+    background-color: #019c69;
+}
+
+.ButtonDeny {
+    width: 22vw;
+    padding: 10px;
+    background-color: #fc0606;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.ButtonDeny:hover {
+    background-color: #960202;
+}
+

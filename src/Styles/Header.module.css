@@ -1,0 +1,88 @@
+.header{
+    display: flex;
+    width: 100vw;
+    height: 5vh;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    -webkit-box-shadow: 0px 6px 5px -4px rgba(0,0,0,0.51);
+    -moz-box-shadow: 0px 6px 5px -4px rgba(0,0,0,0.51);
+    box-shadow: 0px 6px 5px -4px rgba(0,0,0,0.51);
+    position: fixed;
+    z-index: 500;
+    background-color: white;
+}
+
+
+@media screen and (max-width: 989px) {
+    .header{
+
+        width: 110vw;
+
+    }
+    
+}
+
+
+.Menu{
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.MenuIcon{
+    display: flex;
+    margin: 15px;
+    cursor: pointer;
+    align-items: center;
+}
+
+.Notis{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 5vh;
+    margin-left: -120px;
+    width: 30vh;
+    background-color: rgba(243, 227, 254, 0.8);
+    gap: 5px;
+}
+
+.button_accept{
+    background-color: #FF8800; /* Naranja llamativo */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    font-size: 16px; /* Tamaño de fuente */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+
+}
+
+.button_accept:hover {
+    background-color: #e07600; /* Color más oscuro al pasar sobre el botón */
+}
+
+.button_accept:active {
+    background-color: #cc6600; /* Color aún más oscuro al hacer clic */
+}
+
+.logout{
+    display: flex;
+    gap: 2px;
+}
+
+.MenuPhoto{
+    width: 2.5vh;
+    height: 2.5vh;
+    border-radius: 50%;
+}
+
+.MenuPhotoMore{
+    width: 25vh;
+    height: 25vh;
+    border-radius: 50%;
+}

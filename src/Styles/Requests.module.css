@@ -1,0 +1,43 @@
+.Wrapper {
+    
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    width: 60vw;
+    height: auto; /* Asegura que el Wrapper se ajuste según el contenido */
+    border: 1px solid black;
+    gap: 2vh;
+    position: relative; 
+    flex-direction: column;
+   
+}
+
+
+.Info{
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    
+}
+
+.Button {
+    width: 60vw;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.Button:hover {
+    background-color: #0056b3;
+}
+
+.Wrapper:hover {
+    box-shadow: -2px 9px 5px -4px rgba(0,0,0,0.46);
+    -webkit-box-shadow: -2px 9px 5px -4px rgba(0,0,0,0.46);
+    -moz-box-shadow: -2px 9px 5px -4px rgba(0,0,0,0.46);
+}

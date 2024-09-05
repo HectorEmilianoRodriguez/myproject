@@ -1,0 +1,75 @@
+
+/* Estilos para el contenedor principal de autenticación */
+.Wrapper_Auth {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Estilos para el contenedor de información */
+.Wrapper_Info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F9F9F9;
+    width: 50vh;
+    height: 52vh;
+    gap: 25px; 
+    border-radius: 5%;
+}
+
+/* Estilos para el título */
+h1 {
+    margin-top: 25px;
+}
+
+/* Estilos para el logo */
+.Wrapper_Info_Logo {
+    width: 20vh;
+}
+
+/* Estilos para el formulario */
+.Form_Inputs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px; /* Espacio entre los campos de entrada */
+}
+
+/* Contenedor para cada input y su ícono */
+.Input_Wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc; /* Borde del contenedor del input */
+    border-radius: 4px; /* Esquinas redondeadas */
+    padding: 5px;
+}
+
+/* Estilos para el ícono */
+.Icon_Wrapper {
+    margin-right: 10px; /* Espacio entre el ícono y el campo de entrada */
+    color: #666; /* Color del ícono */
+}
+
+/* Estilos para los campos de entrada */
+.FormInput {
+    border: none; /* Elimina el borde predeterminado del input */
+    padding: 10px; /* Espacio interno del input */
+    width: 100%; /* Asegura que el input ocupe todo el espacio disponible */
+    border-radius: 4px; /* Esquinas redondeadas del input */
+    font-size: 1rem; /* Tamaño del texto dentro del input */
+    outline: none; /* Elimina el borde al enfocar el input */
+}
+
+.FormInput:focus {
+    border: 1px solid #007BFF; /* Borde al enfocar el input */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra al enfocar el input */
+}
+
+.ButtonForm{
+    width: 25vh;
+}
+

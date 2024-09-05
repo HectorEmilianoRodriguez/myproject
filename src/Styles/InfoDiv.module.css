@@ -1,0 +1,46 @@
+.Wrapper {
+    margin-top: 15px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    width: 40vh;
+    height: auto; /* Asegura que el Wrapper se ajuste según el contenido */
+    border: 1px solid black;
+    gap: 2vh;
+    cursor: pointer;
+    position: relative; 
+    flex-direction: column; /* Para que los elementos se apilen verticalmente */
+}
+
+.Wrapper:hover {
+    box-shadow: -2px 9px 5px -4px rgba(0,0,0,0.46);
+    -webkit-box-shadow: -2px 9px 5px -4px rgba(0,0,0,0.46);
+    -moz-box-shadow: -2px 9px 5px -4px rgba(0,0,0,0.46);
+}
+
+.Info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4vh;
+    height: 4vh;
+    border: 1px solid black;
+    border-radius: 50%;
+    color: red;
+    font-weight: bold;
+}
+
+.Container {
+    background-color: rgba(243, 227, 254, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    flex-direction: column;
+    width: 100%; /* Asegura que el contenedor tome todo el ancho del Wrapper */
+    padding: 1vh; /* Espacio interno */
+    position: absolute; /* Posición absoluta para sacarlo del flujo normal */
+    top: 100%; /* Coloca el contenedor justo debajo del Wrapper */
+    left: 0; /* Alinea el contenedor con el borde izquierdo del Wrapper */
+    z-index: 10; /* Asegura que el contenedor esté encima de otros elementos */
+}

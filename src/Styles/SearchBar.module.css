@@ -1,0 +1,22 @@
+.wrapper{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    width: 60vw;
+    height: 5vh;
+    border: 1px black solid;
+    padding: 4px;
+    position: fixed;
+    top: 7vh;
+    background-color: white;
+    z-index: 999;
+}
+
+
+
+
+.inputS{
+    width: 60vw;
+    padding: 3px;
+    background-color: white;
+}

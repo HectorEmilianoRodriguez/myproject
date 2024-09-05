@@ -1,0 +1,18 @@
+
+
+.body_dashboard{
+    width: 100vw;
+    height: 100vh;
+    background-color: #FDFDFD;
+
+}
+
+.wrapperRequests{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    overflow-y: scroll;
+    top: 15vh;
+    gap: 15px;
+    height: 80vh;
+}

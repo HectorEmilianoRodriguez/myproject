@@ -1,0 +1,34 @@
+.ChartBar{
+    width: 80vh;
+    height: 35vh;
+}
+.ChartPie{
+    width: 80vh;
+    height: 35vh;
+}
+
+@media screen and (max-width: 1453px){
+
+    .ChartBar{
+        width: 45vh;
+        height: 35vh;
+    }
+    .ChartPie{
+        width: 40vh;
+        height: 35vh;
+    }
+}
+
+
+
+@media screen and (max-width: 989px){
+
+    .ChartBar{
+        width: 42vh;
+        height: 26vh;
+    }
+    .ChartPie{
+        width: 20vh;
+        height: 35vh;
+    }
+}
