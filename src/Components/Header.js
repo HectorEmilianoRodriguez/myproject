@@ -6,18 +6,21 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ejemploFoto from '../Imgs/perfil_example.png';
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
+
+import { setSeenNotificationn } from '../Functions/DashMain/DashUtils';
 
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; //expresión regular para validar un email
 let perfilPhoto = null; //aqui almacena el url de la imágen de usuario desde el back-end
 axios.defaults.withCredentials = true;
 
-const Header = (props,{workEnv}) => {
-
-    const { toggleAside } = props;  // Recibe la función toggleAside
+const Header = (props) => {
+    
+    const { toggleAside, dataNotis, numNotis, setUpdated, isUpdated} = props;  // Recibe la función toggleAside
     const navigate = useNavigate(); //utilizado para renderizar otro componente.
     const [perfilPhoto, setPerfilPhoto] = useState(null); // Estado para almacenar la URL de la imagen de perfil
-    
+
     useEffect(() => {
         const fetchUserPhoto = async () => {
             try {
@@ -31,6 +34,16 @@ const Header = (props,{workEnv}) => {
 
         fetchUserPhoto();
     }, []);
+
+
+    const seenNoti = async (idNoti) =>{
+
+       
+        setSeenNotificationn(idNoti);
+        setUpdated(!isUpdated);
+
+    }
+    
 
 
     const fetchCsrfToken = async () => { //see obtiene el token CSRF generado por el back-end, para evitar vulnerabilidades de este tipo.
@@ -68,20 +81,14 @@ const Header = (props,{workEnv}) => {
         const cambiodepass = () => { // Esta función maneja la lógica del mensaje de cambiar la contraseña
             MySwal.fire({ 
                 title: 'Confirmar actualización de perfil',
-                text: '¿Estás seguro de que quieres cambiar tus datos? Te enviaremos un correo electrónico para realizar el proceso.',
+                text: '¿Estás seguro de que quieres cambiar tus datos?',
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonText: 'Sí, cambiar contraseña',
+                confirmButtonText: 'Sí, caambiar datos',
                 cancelButtonText: 'Cancelar'
             }).then((result) => { // then se utiliza para ejecutarse si la promesa fue correcta (busca que es una promesa en JS)
                 if (result.isConfirmed) {
-                    // Aquí está la lógica del envío de correo electrónico.
-                    console.log('Correo enviado a:', email);
-                    MySwal.fire({
-                        title: 'Correo enviado',
-                        text: 'Revisa tu bandeja de entrada para continuar con el proceso.',
-                        icon: 'success'
-                    });
+                   <Navigate to = '/ChangeMyPerfil'/>
                 }
             });
         };
@@ -139,7 +146,7 @@ const Header = (props,{workEnv}) => {
 
             <div className={styles.Menu}>
                 <div className={styles.MenuIcon}>
-                    <span style={{ color: 'red' }}>{props.numNotis}</span>
+                    <span style={{ color: 'red' }}>{numNotis.total}</span>
                     <AiFillBell />
                     
                     <div
@@ -150,7 +157,15 @@ const Header = (props,{workEnv}) => {
                         <p>Notificaciones</p> 
                         {showNotis && (
                             <div className={styles.Notis} onMouseLeave={() => handleMouseLeave('notis')}>
-                                <Link to="/">test</Link>
+                                {dataNotis && (
+                                    dataNotis.map(data => (
+
+                                        <div className={styles.wrapperNotis}> 
+                                           <p>{data.description} </p> <button className={styles.button_accept} onClick = {()=> {seenNoti(data.idNotification)}}>Marcar como visto</button> 
+                                        </div>
+
+                                    ))
+                                )}
                             
                             </div>
                         )}
@@ -163,7 +178,7 @@ const Header = (props,{workEnv}) => {
                 <div className={styles.Menu}>
                     <div className= {styles.MenuIcon}>
                         <AiFillFilePdf />
-                        <Link to = "/reports" state ={{workEnv}}>Reportes</Link>
+                        <Link to = "/reports" >Reportes</Link>
                     </div>
 
                 </div>

@@ -13,11 +13,14 @@ export const getNotApprobedActivities = async (setData) => {
 
         if (response.data) {
     
-            setData(response.data);  // Guardar los datos en el estado
+            setData(response.data || []);  // Guardar los datos en el estado
         }
 
     } catch (err) {
         console.error(err);
+        
+        setData([]);  // Guardar los datos en el estado
+
     }
 };
 
@@ -33,7 +36,7 @@ export const getAlmostExpiredActivities = async (setData) => {
 
         if (response.data) {
     
-            setData(response.data);  // Guardar los datos en el estado
+            setData(response.data || []);  // Guardar los datos en el estado
         }
 
     } catch (err) {
@@ -53,7 +56,7 @@ export const getNotSeenComments = async (setData) => {
 
         if (response.data) {
     
-            setData(response.data);  // Guardar los datos en el estado
+            setData(response.data || []);  // Guardar los datos en el estado
         }
 
     } catch (err) {
@@ -73,13 +76,69 @@ export const getPendingApprovals = async (setData) => {
 
         if (response.data) {
     
-            setData(response.data);  // Guardar los datos en el estado
+            setData(response.data || []);  // Guardar los datos en el estado
         }
 
     } catch (err) {
         console.error(err);
     }
 };
+
+export const getNotifications = async (setData) => {
+    try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/getNotifications`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true
+        });
+
+        if (response.data) {
+    
+            setData(response.data || []);  // Guardar los datos en el estado
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+export const countMyNotis = async (setData) => {
+    try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/countMyNotis`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true
+        });
+
+        if (response.data) {
+    
+            setData(response.data || []);  // Guardar los datos en el estado
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+export const setSeenNotificationn = async (idNoti) => {
+    try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/setSeenNotificationn/${idNoti}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true
+        });
+
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 
 export const getRequestsData = async (setRequestData) =>{
 
@@ -94,7 +153,7 @@ export const getRequestsData = async (setRequestData) =>{
 
         if (response.data) {
     
-            setRequestData(response.data);  // Guardar los datos en el estado
+            setRequestData(response.data || []);  // Guardar los datos en el estado
         }
 
     } catch (err) {
@@ -104,7 +163,42 @@ export const getRequestsData = async (setRequestData) =>{
 
 }
 
-export const showRequestWorkEnvMessage = async (idWorkEnv, setUpdated, isUpdated) => {
+export const NotifyUserApprobedOrNot = async (workenv, idUser, flag) =>{
+
+    try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/NotifyUserApprobedOrNot/${workenv}/${idUser}/${flag}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true
+        });
+
+    } catch (err) {
+        console.error(err);
+    }
+
+}
+
+export const NotifyUserNewRequest = async (workenv, idUser) =>{
+
+    try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/NotifyUserNewRequest/${workenv}/${idUser}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true
+        });
+
+    } catch (err) {
+        console.error(err);
+    }
+
+}
+
+
+export const showRequestWorkEnvMessage = async (idUser, idWorkEnv, nameW, setUpdated, isUpdated) => {
     Swal.fire({
         title: '¿Deseas unirte a este entorno de trabajo?',
         icon: 'question',
@@ -134,6 +228,15 @@ export const showRequestWorkEnvMessage = async (idWorkEnv, setUpdated, isUpdated
                 if (response.data) {
                     setUpdated(!isUpdated);
                     Swal.fire('Solicitud enviada', 'Tu solicitud ha sido enviada con éxito', 'success');
+
+                    return axios.get(`http://127.0.0.1:8000/api/NotifyUserNewRequest/${nameW}/${idUser}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        withCredentials: true
+                    })
+
                 }
 
                 
@@ -170,7 +273,7 @@ export const searchRequests = debounce(async (busqueda, setRequestData) => {
         });
 
         if (response.data) {
-            setRequestData(response.data);  // Guardar los datos en el estado
+            setRequestData(response.data || []);  // Guardar los datos en el estado
         } else {
             setRequestData(null);
         }
@@ -192,7 +295,7 @@ export const searchMyRequests = debounce(async (busqueda, setRequestData) => {
         });
 
         if (response.data) {
-            setRequestData(response.data);  // Guardar los datos en el estado
+            setRequestData(response.data || []);  // Guardar los datos en el estado
         } else {
             setRequestData(null);
         }
@@ -203,7 +306,8 @@ export const searchMyRequests = debounce(async (busqueda, setRequestData) => {
 }, 500); // 500 ms de retraso
 
 
-export const showRequestJoinWorkEnvMessage = async (idUser,idWorkEnv, setUpdated, isUpdated) => {
+
+export const showRequestJoinWorkEnvMessage = async (idUser, idWorkEnv, nameworkenv, setUpdated, isUpdated) => {
     Swal.fire({
         title: '¿Estás seguro de aceptar la solicitud?',
         icon: 'question',
@@ -220,6 +324,7 @@ export const showRequestJoinWorkEnvMessage = async (idUser,idWorkEnv, setUpdated
                 allowOutsideClick: false, // No permitir cerrar la alerta al hacer clic afuera
             });
 
+            // Primera solicitud: Aprobar la solicitud de unión
             return axios.get(`http://127.0.0.1:8000/api/approbeRequestWorkEnv/${idUser}/${idWorkEnv}`, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -233,20 +338,33 @@ export const showRequestJoinWorkEnvMessage = async (idUser,idWorkEnv, setUpdated
                 if (response.data) {
                     setUpdated(!isUpdated);
                     Swal.fire('Solicitud aceptada', 'La solicitud ha sido aprobada', 'success');
+                    
+                    // Segunda solicitud: Notificar al usuario
+                    return axios.get(`http://127.0.0.1:8000/api/NotifyUserApprobedOrNot/${nameworkenv}/${idUser}/1`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        withCredentials: true
+                    });
+                } else {
+                    throw new Error('No se pudo aprobar la solicitud');
                 }
-
-                
+            })
+            .then(notificationResponse => {
+                // Manejar la respuesta de la notificación
+                Swal.fire('Usuario notificado', 'El usuario ha sido notificado exitosamente.', 'success');
             })
             .catch(err => {
                 Swal.close();  // Cerrar el spinner de carga
-                Swal.fire('Error', 'No se pudo enviar la solicitud, intenta más tarde', 'error');
+                Swal.fire('Error', 'No se pudo completar el proceso, intenta más tarde', 'error');
                 console.error(err);
             });
         }
     });
 };
 
-export const showRequestnotJoinWorkEnvMessage = async (idJoinUserWork, setUpdated, isUpdated) => {
+export const showRequestnotJoinWorkEnvMessage = async (idUser, idJoinUserWork, nameworkenv, setUpdated, isUpdated) => {
     Swal.fire({
         title: '¿Estás seguro de rechazar la solicitud?',
         icon: 'warning',
@@ -276,6 +394,16 @@ export const showRequestnotJoinWorkEnvMessage = async (idJoinUserWork, setUpdate
                 if (response.data) {
                     Swal.fire('Solicitud rechazada', 'La solicitud ha sido rechazada', 'success');
                     setUpdated(!isUpdated);
+
+                    // Segunda solicitud: Notificar al usuario
+                    return axios.get(`http://127.0.0.1:8000/api/NotifyUserApprobedOrNot/${nameworkenv}/${idUser}/0`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        withCredentials: true
+                    });
+
                 }
 
                 

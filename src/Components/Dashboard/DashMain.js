@@ -8,7 +8,10 @@ import MenuOptions from '../MenuOptions';
 import InfoDiv from '../InfoDiv';
 import { Link } from 'react-router-dom';
 import { AiFillHome, AiFillAlert, AiOutlineHeart, AiOutlinePlus } from "react-icons/ai";
-import { getNotApprobedActivities, getAlmostExpiredActivities, getNotSeenComments, getPendingApprovals, getRequestsData, showRequestWorkEnvMessage, searchRequests, debounce, showRequestJoinWorkEnvMessage, showRequestnotJoinWorkEnvMessage, searchMyRequests } from '../../Functions/DashMain/DashUtils';
+import { getNotApprobedActivities, getAlmostExpiredActivities, 
+    getNotSeenComments, getPendingApprovals, getRequestsData, 
+    showRequestWorkEnvMessage, searchRequests, debounce, showRequestJoinWorkEnvMessage,
+     showRequestnotJoinWorkEnvMessage, searchMyRequests, countMyNotis, getNotifications } from '../../Functions/DashMain/DashUtils';
 import MyRequests from './MyRequests';
 import Requests from './Requests';
 import SearchBar from '../SearchBar';
@@ -31,8 +34,12 @@ const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
     const [ComentariosNoVistos, setComentariosNoVistos] = useState([]);
     const [SolicitudesPendientes, setSolicitudesPendientes] = useState([]);
     const [requestsData, setRequests] = useState([]);
-    const [searchPossiblesRequests, setPossibleRequests] = useState(null);
-    const [searchPossiblesMyRequests, setPossibleMyRequests] = useState(null);
+    const [searchPossiblesRequests, setPossibleRequests] = useState([]);
+    const [searchPossiblesMyRequests, setPossibleMyRequests] = useState([]);
+    const [notis, setNotis] = useState([]);
+    const [notistotal, setNotistotal] = useState(0);
+
+
     const [isUpdated, setUpdated] = useState (false);
     const [totals, setTotals] = useState({
         pendingApproval: 0,
@@ -103,6 +110,9 @@ const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
         getRequestsData(setRequests);
         searchRequests('', setPossibleRequests); // Inicializa la búsqueda con texto vacío
         searchMyRequests('',setPossibleMyRequests);
+        getNotifications(setNotis);
+        countMyNotis(setNotistotal);
+
         
     }, [isUpdated]);
 
@@ -140,11 +150,14 @@ const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
     return (
         <div className={styles.body_dashboard}>
             <Header 
-                numNotis='3'
+                numNotis={notistotal}
                 user={user.name}
                 email={user.email}
                 isWorkEnv={false}
                 toggleAside={toggleAside}
+                dataNotis = {notis}
+                setUpdated = {setUpdated}
+                isUpdated = {isUpdated}
             />
             {isAsideVisible && !isWorkEnv && (
                 <Aside titles={titlesAside}>
@@ -174,7 +187,7 @@ const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
                                 <Requests
                                     key={index}
                                     data={data}
-                                    sendrequest={() => showRequestWorkEnvMessage(data.idWorkEnv, setUpdated, isUpdated)}
+                                    sendrequest={() => showRequestWorkEnvMessage(data.idUser, data.idWorkEnv, data.nameW, setUpdated, isUpdated)}
                                 />
                             ))
                         ) : (
@@ -182,25 +195,24 @@ const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
                                 <Requests
                                     key={index}
                                     data={data}
-                                    sendrequest={() => showRequestWorkEnvMessage(data.idWorkEnv, setUpdated, isUpdated)}
+                                    sendrequest={() => showRequestWorkEnvMessage(data.idUser, data.idWorkEnv, data.nameW, setUpdated, isUpdated)}
                                 />
                             ))
                         )}
                     </div>
                 </Main>
             ) : isMyRequests ? (
-                <Main>
-
-                    <div className={styles.wrapperRequests}>
+                <Main isMainDash={false}>
                     <SearchBar getSearchData={handleSearchMyRequests} placeholder='Nombre del entorno o del usuario.' />
+                    <div className={styles.wrapperRequests}>
 
                     {searchPossiblesMyRequests && searchPossiblesMyRequests.length > 0 ? (
-
+                        
 
                         searchPossiblesMyRequests.map((data,index)=>(
 
-                            <MyRequests key = {index} data={data} submitAccept={()=>{showRequestJoinWorkEnvMessage(data.idUser, data.idWorkEnv, setUpdated, isUpdated)}} 
-                                submitDeny={()=>{showRequestnotJoinWorkEnvMessage(data.idJoinUserWork, setUpdated, isUpdated)}}
+                            <MyRequests key = {index} data={data} submitAccept={()=>{showRequestJoinWorkEnvMessage(data.idUser, data.idWorkEnv, data.nameW, setUpdated, isUpdated)}} 
+                                submitDeny={()=>{showRequestnotJoinWorkEnvMessage(data.idUser, data.idJoinUserWork, data.nameW, setUpdated, isUpdated)}}
                             />
                         ))
 
@@ -208,8 +220,8 @@ const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
 
                             SolicitudesPendientes && SolicitudesPendientes.map((data,index) =>(
 
-                                <MyRequests key = {index} data={data} submitAccept={()=>{showRequestJoinWorkEnvMessage(data.idUser, data.idWorkEnv, setUpdated, isUpdated)}} 
-                                    submitDeny={()=>{showRequestnotJoinWorkEnvMessage(data.idJoinUserWork, setUpdated, isUpdated)}}
+                                <MyRequests key = {index} data={data} submitAccept={()=>{showRequestJoinWorkEnvMessage(data.idUser, data.idWorkEnv, data.nameW, setUpdated, isUpdated)}} 
+                                    submitDeny={()=>{showRequestnotJoinWorkEnvMessage(data.idUser, data.idJoinUserWork, data.nameW, setUpdated, isUpdated)}}
                                 />
 
 
@@ -236,33 +248,53 @@ const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
                         ))}
                     </InfoDiv>
                     <InfoDiv Info={totals.pendingApproval} Desc='Actividades por evaluar'>
-                        {ActividadesPorAprobar && ActividadesPorAprobar.map(data => (
+                    {Array.isArray(ActividadesPorAprobar) && ActividadesPorAprobar.length > 0 ? (
+                        ActividadesPorAprobar.map(data => (
                             <Link key={data.idWorkEnv} to={`/WorkEnv/${data.nameW}/${data.idWorkEnv}/Board/${data.nameB}/${data.idBoard}`}>
                                 {`Actividad "${data.nameC}" del tablero "${data.nameB}" en el entorno "${data.nameW}"`}
                             </Link>
-                        ))}
+                        ))
+                    ) : (
+                        <p>No hay actividades por evaluar.</p>  // Mensaje cuando el array está vacío
+                    )}
+                </InfoDiv>
+
+                <InfoDiv Info={totals.almostExpiredOrExpired} Desc='Actividades por expirar'>
+                        {Array.isArray(ActividadesPorExpirar) && ActividadesPorExpirar.length > 0 ? (
+                            ActividadesPorExpirar.map(data => (
+                                <Link key={data.idWorkEnv} to={`/WorkEnv/${data.nameW}/${data.idWorkEnv}/Board/${data.nameB}/${data.idBoard}`}>
+                                    {`Actividad "${data.nameC}" del tablero "${data.nameB}" en el entorno "${data.nameW}"`}
+                                </Link>
+                            ))
+                        ) : (
+                            <p>No hay actividades por expirar.</p>  // Mensaje cuando el array está vacío
+                        )}
                     </InfoDiv>
-                    <InfoDiv Info={totals.almostExpiredOrExpired} Desc='Actividades por expirar'>
-                        {ActividadesPorExpirar && ActividadesPorExpirar.map(data => (
-                            <Link key={data.idWorkEnv} to={`/WorkEnv/${data.nameW}/${data.idWorkEnv}/Board/${data.nameB}/${data.idBoard}`}>
-                                {`Actividad "${data.nameC}" del tablero "${data.nameB}" en el entorno "${data.nameW}"`}
-                            </Link>
-                        ))}
-                    </InfoDiv>
+
                     <InfoDiv Info={totals.notSeenComments} Desc='Comentarios pendientes'>
-                        {ComentariosNoVistos && ComentariosNoVistos.map(data => (
-                            <Link key={data.idWorkEnv} to={`/WorkEnv/${data.nameW}/${data.idWorkEnv}/Board/${data.nameB}/${data.idBoard}`}>
-                                {`Comentario en la actividad "${data.nameC}" del tablero "${data.nameB}" en el entorno "${data.nameW}"`}
-                            </Link>
-                        ))}
+                        {Array.isArray(ComentariosNoVistos) && ComentariosNoVistos.length > 0 ? (
+                            ComentariosNoVistos.map(data => (
+                                <Link key={data.idWorkEnv} to={`/WorkEnv/${data.nameW}/${data.idWorkEnv}/Board/${data.nameB}/${data.idBoard}`}>
+                                    {`Comentario en la actividad "${data.nameC}" del tablero "${data.nameB}" en el entorno "${data.nameW}"`}
+                                </Link>
+                            ))
+                        ) : (
+                            <p>No hay comentarios pendientes.</p>  // Mensaje cuando el array está vacío
+                        )}
                     </InfoDiv>
+
                     <InfoDiv Info={totals.requests} Desc='Solicitudes'>
-                        {SolicitudesPendientes && SolicitudesPendientes.map(data => (
-                            <Link key={data.idWorkEnv} to={`/dashboard/MyRequests`}>
-                                {`El miembro ${data.name} ha hecho una solicitud para el entorno "${data.nameW}"`}
-                            </Link>
-                        ))}
+                        {Array.isArray(SolicitudesPendientes) && SolicitudesPendientes.length > 0 ? (
+                            SolicitudesPendientes.map(data => (
+                                <Link key={data.idWorkEnv} to={`/dashboard/MyRequests`}>
+                                    {`El miembro ${data.name} ha hecho una solicitud para el entorno "${data.nameW}"`}
+                                </Link>
+                            ))
+                        ) : (
+                            <p>No hay solicitudes pendientes.</p>  // Mensaje cuando el array está vacío
+                        )}
                     </InfoDiv>
+
                 </Main>
             )}
         </div>
