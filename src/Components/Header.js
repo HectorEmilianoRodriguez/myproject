@@ -6,13 +6,11 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import ejemploFoto from '../Imgs/perfil_example.png';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
+
 
 import { setSeenNotificationn } from '../Functions/DashMain/DashUtils';
 
 
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; //expresión regular para validar un email
-let perfilPhoto = null; //aqui almacena el url de la imágen de usuario desde el back-end
 axios.defaults.withCredentials = true;
 
 const Header = (props) => {
@@ -48,7 +46,7 @@ const Header = (props) => {
 
     const fetchCsrfToken = async () => { //see obtiene el token CSRF generado por el back-end, para evitar vulnerabilidades de este tipo.
         try {
-           const response = await axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie');
+            await axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie');
         } catch (error) {
             console.error('Error fetching CSRF token:', error);
         }
@@ -88,7 +86,8 @@ const Header = (props) => {
                 cancelButtonText: 'Cancelar'
             }).then((result) => { // then se utiliza para ejecutarse si la promesa fue correcta (busca que es una promesa en JS)
                 if (result.isConfirmed) {
-                   <Navigate to = '/ChangeMyPerfil'/>
+                    navigate('/ChangeMyPerfil');
+
                 }
             });
         };

@@ -1,0 +1,26 @@
+.Wrapper{
+    width: 100vw;
+    height: 100vh;
+    background-color: #FDFDFD;
+    
+}
+.WrapperMain{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+@media screen and (max-width: 910px){
+    .WrapperMain{
+        flex-direction: column-reverse;
+        gap: 0px;
+        position: relative;
+        top: -10vh;
+        width: 100vw;
+        height: 110vh;
+        
+    }
+
+
+}

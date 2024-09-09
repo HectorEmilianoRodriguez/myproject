@@ -126,7 +126,7 @@ export const countMyNotis = async (setData) => {
 
 export const setSeenNotificationn = async (idNoti) => {
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/setSeenNotificationn/${idNoti}`, {
+        await axios.get(`http://127.0.0.1:8000/api/setSeenNotificationn/${idNoti}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -166,7 +166,7 @@ export const getRequestsData = async (setRequestData) =>{
 export const NotifyUserApprobedOrNot = async (workenv, idUser, flag) =>{
 
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/NotifyUserApprobedOrNot/${workenv}/${idUser}/${flag}`, {
+        await axios.get(`http://127.0.0.1:8000/api/NotifyUserApprobedOrNot/${workenv}/${idUser}/${flag}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -183,7 +183,7 @@ export const NotifyUserApprobedOrNot = async (workenv, idUser, flag) =>{
 export const NotifyUserNewRequest = async (workenv, idUser) =>{
 
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/NotifyUserNewRequest/${workenv}/${idUser}`, {
+         await axios.get(`http://127.0.0.1:8000/api/NotifyUserNewRequest/${workenv}/${idUser}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -191,6 +191,54 @@ export const NotifyUserNewRequest = async (workenv, idUser) =>{
             withCredentials: true
         });
 
+    } catch (err) {
+        console.error(err);
+    }
+
+}
+
+export const newWorkEnv = async (nameW, type, descriptionW, date_start, date_end) =>{
+
+    try {
+        const response = await axios.post(`http://127.0.0.1:8000/api/newWorkEnv`, {
+            nameW,
+            type,
+            descriptionW,
+            date_start,
+            date_end
+        },{
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true
+        });
+
+        if(response.data.message === "ok"){
+            return true;
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+
+}
+
+
+export const getMyArchivedWorkEnvs = async (setData) =>{
+
+    try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/getMyArchivedWorkEnvs`,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true
+        });
+
+        if(response.data){
+            setData(response.data);
+        }
     } catch (err) {
         console.error(err);
     }
@@ -416,3 +464,33 @@ export const showRequestnotJoinWorkEnvMessage = async (idUser, idJoinUserWork, n
         }
     });
 };
+
+
+
+
+
+export const inputsForm = [{ index: '0', placeholder: 'Nombre del entorno', isPass: false }, 
+    { index: '1', placeholder: 'Fecha de inicio', isDate: true },
+    { index: '2', placeholder: 'Fecha de fin', isDate: true }
+]
+
+
+export  function convertirFecha(fecha) {
+    if (!fecha || typeof fecha !== 'string') {
+        
+        return fecha;
+    }
+    
+    // Verifica que la fecha esté en el formato dd/mm/aaaa
+    const partes = fecha.split('/');
+    if (partes.length !== 3) {
+        return fecha;
+    }
+
+    const dia = partes[0].padStart(2, '0');  // Asegura que el día tenga 2 dígitos
+    const mes = partes[1].padStart(2, '0');  // Asegura que el mes tenga 2 dígitos
+    const anio = partes[2];
+
+    // Retorna la fecha en formato aaaa-mm-dd
+    return `${anio}-${mes}-${dia}`;
+}

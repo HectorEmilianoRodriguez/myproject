@@ -11,7 +11,6 @@ export const fetchUserPhoto = async (filename, setPerfilPhoto) => {
         const imageUrl = URL.createObjectURL(response.data);
         setPerfilPhoto(imageUrl); // Establecer la URL creada como fuente de la imagen
     } catch (error) {
-        console.error('Error fetching user photo:', error);
         setPerfilPhoto(imgdefault); // Fallback a imagen de ejemplo
     }
 };

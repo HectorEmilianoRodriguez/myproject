@@ -11,16 +11,17 @@ import { AiFillHome, AiFillAlert, AiOutlineHeart, AiOutlinePlus } from "react-ic
 import { getNotApprobedActivities, getAlmostExpiredActivities, 
     getNotSeenComments, getPendingApprovals, getRequestsData, 
     showRequestWorkEnvMessage, searchRequests, debounce, showRequestJoinWorkEnvMessage,
-     showRequestnotJoinWorkEnvMessage, searchMyRequests, countMyNotis, getNotifications } from '../../Functions/DashMain/DashUtils';
+     showRequestnotJoinWorkEnvMessage, searchMyRequests, countMyNotis, getNotifications, inputsForm, convertirFecha,
+     newWorkEnv, getMyArchivedWorkEnvs} from '../../Functions/DashMain/DashUtils';
 import MyRequests from './MyRequests';
 import Requests from './Requests';
 import SearchBar from '../SearchBar';
-
+import Formulario from '../Formulario';
 const titlesAside = [
   { title: <Link to="/dashboard">Home</Link>, icon: <AiFillHome /> },
   { title: <Link to="/dashboard/JoinWorkEnv">Unirme a un entorno</Link>, icon: <AiOutlineHeart /> },
   { title: <Link to="/dashboard/MyRequests">Solicitudes</Link>, icon: <AiFillAlert /> },
-  { title: <Link to="/createWorkEnv">Crear nuevo entorno</Link>, icon: <AiOutlinePlus /> }
+  { title: <Link to="/dashboard/newWorkEnv">Crear nuevo entorno</Link>, icon: <AiOutlinePlus /> }
 ];
 
 const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
@@ -38,7 +39,17 @@ const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
     const [searchPossiblesMyRequests, setPossibleMyRequests] = useState([]);
     const [notis, setNotis] = useState([]);
     const [notistotal, setNotistotal] = useState(0);
+    const [selectedOption, setSelectedOption] = useState(null); // Estado para manejar el valor del select
+    const [textarea, settextarea] = useState(null); // Estado para manejar el valor del select
 
+    const [archivedWork, setArchivedWorks] = useState([]); //para obtener los entornos archivados.
+
+
+    //states para el form
+    const [nameWork, setnameWork] = useState('');
+    const [workStart, setWorkStart] = useState('');
+    const [workEnd, setWorkEnd] = useState('');
+    const [alerta, setAlerta] = useState('');
 
     const [isUpdated, setUpdated] = useState (false);
     const [totals, setTotals] = useState({
@@ -112,12 +123,24 @@ const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
         searchMyRequests('',setPossibleMyRequests);
         getNotifications(setNotis);
         countMyNotis(setNotistotal);
-
+        getMyArchivedWorkEnvs(setArchivedWorks);
         
     }, [isUpdated]);
 
     const toggleAside = () => {
         setAsideVisible(!isAsideVisible);
+    };
+
+    const handleSelectChange = (option, actionMeta) => {
+        if (actionMeta.action === "select-option") {
+            setSelectedOption(option.value); // Guarda la opción seleccionada
+        } else if (actionMeta.action === "create-option") {
+            setSelectedOption(option.value); // Guarda la opción que el usuario escribió
+        }
+    };
+    
+    const handleTextAreaChange = (e) => {
+        settextarea(e.target.value);  // Actualiza el estado con el texto ingresado
     };
 
     const handleSearch = debounce(async (searchText, setLoading) => {
@@ -144,8 +167,41 @@ const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
             setLoading(false);
         }
     }, 300);
+    
+   
+    const FormGetData = (e, index) =>{
+        const value = e.target.value;
+        if (index === 0 ) setnameWork(value);
+        if (index === 1 ) setWorkStart(convertirFecha(value));
+        if (index === 2 ) setWorkEnd(convertirFecha(value));
+    };
+
+    const submitForm = (e) => {
+        e.preventDefault();
+    
+        // Validación del nombre del entorno
+        if (!nameWork || nameWork.length > 30) {
+            setAlerta("El nombre del entorno es requerido y no debe exceder los 30 caracteres.");
+            return;
+        }
+    
+       
+        // Validación de `selectedOption`
+        if (!selectedOption) {
+            setAlerta("Debe seleccionar una opción.");
+            return;
+        }
+
+        setAlerta(''); // Limpiar alerta si todo está bien
+
+        if(newWorkEnv(nameWork, selectedOption, textarea, workStart, workEnd )){
+            setAlerta('Nuevo entorno creado exitosamente');
+            setUpdated(!isUpdated);
+        }
 
 
+    };
+    
 
     return (
         <div className={styles.body_dashboard}>
@@ -171,12 +227,40 @@ const DashMain = ({ user, isWorkEnv, isForm, isRequests, isMyRequests }) => {
                         linkTo='/WorkEnv'
                         details={EntornosParticipo}
                     /> 
+                     <MenuOptions 
+                        title='Mis entornos archivados'
+                        linkTo='/WorkEnv'
+                        details={archivedWork}
+                    /> 
                 </Aside>
             )}
             {/* Lógica condicional para renderizar solo un contenido en el <Main> */}
             {isForm ? (
-                <Main>
-                    {/* Contenido específico para el formulario */}
+                <Main isMainDash = {false}>
+                    
+                    <Formulario 
+                        title = "Nuevo entorno"
+                        desc = "Introduce los campos que se te indica"
+                        inputs = {inputsForm}
+                        handleSelectChange= {handleSelectChange}
+                        selectedOption={selectedOption}
+                        handleChange={FormGetData}
+                        eventButton = {submitForm}
+                        descButton = "Crear nuevo entorno"
+                        values = {[nameWork, workStart, workEnd]}
+                        isBox = {true}
+                        isTextArea = {true}
+                        handleTextAreaChange = {handleTextAreaChange}
+                        textAreaValue = {textarea}
+                        descSelect = "Selecciona o escribe el tipo de entorno"
+                        alert = {alerta}
+                    >
+                        
+                    </Formulario>
+                    
+
+
+
                 </Main>
             ) : isRequests ? (
                 <Main isMainDash={false}>
