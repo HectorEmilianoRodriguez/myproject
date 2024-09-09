@@ -86,3 +86,10 @@
     height: 25vh;
     border-radius: 50%;
 }
+
+.wrapperNotis{
+    display: flex;
+    gap: 2px;
+
+}
+

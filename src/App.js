@@ -37,7 +37,7 @@ function App() {
                 />
                 <Route
                     path="/WorkEnv/:nameWork/:idWork"
-                    element={user ? <WorkEnvMain user={user} /> : <Navigate to="/" />}
+                    element={user ? <WorkEnvMain user={user} isMain={true}/> : <Navigate to="/" />}
                 />
                 <Route
                     path="/ChangeMyPerfil"
@@ -51,6 +51,10 @@ function App() {
                 <Route
                     path="/dashboard/MyRequests"
                     element={user ? <DashMain user={user} isWorkEnv={false} isForm={false} isRequests={false} isMyRequests = {true} /> : <Navigate to="/" />}
+                />
+                <Route
+                    path="/dashboard/newWorkEnv"
+                    element={user ? <DashMain user={user} isWorkEnv={false} isForm={true} isRequests={false} isMyRequests = {false} /> : <Navigate to="/" />}
                 />
             </Routes>
         </BrowserRouter>

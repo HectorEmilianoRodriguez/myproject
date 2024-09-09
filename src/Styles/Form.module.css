@@ -60,7 +60,7 @@ h1 {
 
 /* Estilos para los inputs */
 .FormInput {
-    width: 90%; /* Ajusta el ancho de los inputs */
+    width: 100%; /* Ajusta el ancho de los inputs */
     height: 5vh;
     font-size: 15px;
     text-align: center;
@@ -98,6 +98,24 @@ h1 {
 
 .ButtonForm:hover {
     background-color: #0056b3;
+}
+
+
+/* Estilos para el botón */
+.ButtonForm2 {
+    width: 25vh;
+    padding: 10px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.ButtonForm2:hover {
+    background-color: #aa0505;
 }
 
 .alert{
@@ -179,3 +197,60 @@ h1 {
     height: 100%;
     object-fit: cover; /* Mantiene la proporción y cubre el contenedor */
   }
+
+  .FormTextArea {
+    width: 80%;  /* Ocupa todo el ancho disponible */
+    padding: 10px;  /* Espacio interno para el texto */
+    border: 1px solid #ccc;  /* Borde gris claro */
+    border-radius: 5px;  /* Bordes redondeados */
+    font-size: 16px;  /* Tamaño de fuente adecuado */
+    font-family: 'Arial', sans-serif;  /* Fuente para el texto */
+    resize: vertical;  /* Permite cambiar el tamaño solo verticalmente */
+    min-height: 100px;  /* Altura mínima del textarea */
+    outline: none;  /* Elimina el borde azul cuando está en foco */
+    transition: border-color 0.3s ease;  /* Transición suave al cambiar el borde */
+    background-color: #fff;
+}
+
+.FormTextArea:focus {
+    border-color: #007bff;  /* Cambia el color del borde cuando está en foco */
+    background-color: #fff;  /* Fondo blanco al hacer foco */
+}
+
+.FormTextArea::placeholder {
+    color: #aaa;  /* Color gris para el placeholder */
+    font-style: italic;  /* Estilo cursivo para el placeholder */
+}
+
+.DateWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.DatePlaceholder {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    color: #aaa; /* Color gris claro */
+    font-size: 16px;
+    pointer-events: none; /* No permitir la interacción con el placeholder */
+    transition: all 0.3s ease; /* Transición suave para el movimiento del placeholder */
+    background: white; /* Fondo blanco para evitar el texto detrás del campo de fecha */
+    padding: 0 5px; /* Espaciado para evitar el texto sobre el borde del input */
+}
+
+.FormInput {
+    width: 100%;
+    padding: 12px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.FormInput:focus + .DatePlaceholder,
+.FormInput:not(:placeholder-shown) + .DatePlaceholder {
+    top: -10px; /* Mueve el placeholder hacia arriba cuando el input tiene foco o no está vacío */
+    font-size: 12px;
+    color: #007bff; /* Color del placeholder cuando el input tiene foco */
+}
